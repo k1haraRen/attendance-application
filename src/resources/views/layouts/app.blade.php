@@ -6,7 +6,7 @@
 </head>
 <body style="font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #fff;">
+            background-color: #f0f0f2;">
 <header style="background-color: #000; padding: 16px; display: flex; justify-content: space-between; align-items: center; height: 3vh;">
     <div class="logo">
         {{-- ロゴ画像 --}}

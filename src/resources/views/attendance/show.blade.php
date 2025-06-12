@@ -1,68 +1,61 @@
 @extends('layouts.app')
+<style>
+td {
+    border-bottom: 2px solid #f0f0f2;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+</style>
 
 @section('content')
-    <div class="container" style="width: 500px; margin: 50px auto;">
+    <div class="container"
+        style="display: flex; flex-direction: column; justify-content: center; padding-left: 25%;">
+            <h2 style="width; 70%; font-weight: bold; border-left: 5px solid #000; padding-left: 10px; margin-bottom: 30px;">勤怠詳細</h2>
 
-        <h2 style="text-align: center; margin-bottom: 30px;">勤怠詳細</h2>
+            <table style="width: 70%; background: #fff; border-radius: 5px;">
+                <tr>
+                    <td style="width: 30%; padding-left: 50px; font-weight: bold;">名前</td>
+                    <td style="padding-left: 50px;">西　侑奈</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding-left: 50px;">日付</td>
+                    <td>
+                        <span style="margin-right: 20px; padding-left: 50px;">2023年</span>
+                        <span style="">6月1日</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding-left: 50px;">出勤・退勤</td>
+                    <td style="padding-left: 50px;">
+                        <input type="time" name="start_time" value="09:00" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;"> 〜
+                        <input type="time" name="end_time" value="18:00" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding-left: 50px;">休憩</td>
+                    <td style="padding-left: 50px;">
+                        <input type="time" name="break_start" value="12:00" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;"> 〜
+                        <input type="time" name="break_end" value="13:00" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding-left: 50px;">休憩2</td>
+                    <td style="padding-left: 50px;">
+                        <input type="time" name="break2_start" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;"> 〜
+                        <input type="time" name="break2_end" style="width: 130px; text-align: center; line-height: 22px; border: 1px solid rgb(228, 228, 233); font-size: 15px; font-weight: bold;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding-left: 50px;">備考</td>
+                    <td style="padding-left: 50px;">
+                        <textarea name="remarks" rows="4" style="width: 50%; border: 1px solid rgb(228, 228, 233);">電話連絡のため</textarea>
+                    </td>
+                </tr>
+            </table>
 
-        <form method="POST" action="#">
-            {{-- CSRFトークン（後でルーティングと合わせて調整） --}}
-            @csrf
-
-            <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; background-color: #fdfdfd;">
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">氏名</th>
-                        <td style="padding: 8px;">田中 太郎</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">日付</th>
-                        <td style="padding: 8px;">2023/06/01</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">出勤</th>
-                        <td style="padding: 8px;">
-                            <input type="time" name="start_time" value="08:30"
-                                style="width: 100%; padding: 5px; border: 1px solid #ccc;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">休憩</th>
-                        <td style="padding: 8px;">
-                            <input type="time" name="break_start" value="12:00"
-                                style="width: 45%; padding: 5px; border: 1px solid #ccc;"> 〜
-                            <input type="time" name="break_end" value="13:00"
-                                style="width: 45%; padding: 5px; border: 1px solid #ccc;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">退勤</th>
-                        <td style="padding: 8px;">
-                            <input type="time" name="end_time" value="17:30"
-                                style="width: 100%; padding: 5px; border: 1px solid #ccc;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px; vertical-align: top;">備考</th>
-                        <td style="padding: 8px;">
-                            <textarea name="note" rows="3"
-                                style="width: 100%; padding: 5px; border: 1px solid #ccc;">修正の理由を記入してください。</textarea>
-                        </td>
-                    </tr>
-                </table>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <button type="submit"
-                        style="padding: 10px 30px; background-color: black; color: white; border: none;">修正申請</button>
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="{{ route('attendance.index') }}"
-                    style="display: inline-block; padding: 10px 30px; background-color: #ccc; color: black; text-decoration: none;">戻る</a>
-            </div>
-
-        </form>
-
+        <div style="width: 70%; text-align: right; margin-top: 30px;">
+            <button
+                style="padding: 10px 30px; background-color: black; color: white; border: none; font-weight: bold; border-radius: 5px;">修正</button>
+        </div>
     </div>
 @endsection
