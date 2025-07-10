@@ -19,6 +19,7 @@ class CreateAttendancesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->integer('year');
             $table->date('date');
+            $table->string('days');
             $table->time('syukkin')->nullable();
             $table->time('taikin')->nullable();
             $table->time('rests1')->nullable();
