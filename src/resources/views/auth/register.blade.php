@@ -86,12 +86,11 @@
 
 <body>
 
-    {{-- 共通ヘッダー読み込み --}}
     @include('layouts.app')
 
     <div class="container">
         <h2>会員登録</h2>
-        {{-- <form method="POST" action="{{ route('register') }}"> --}}
+        <form method="post" action="/register">
             @csrf
 
             <label for="name">名前</label>
@@ -110,7 +109,7 @@
         </form>
 
         <div class="login-link">
-            <a href=>ログインはこちら</a>
+            <a href="{{ route('user_login.form') }}">ログインはこちら</a>
         </div>
     </div>
 

@@ -86,12 +86,11 @@
 
 <body>
 
-    {{-- 共通ヘッダー読み込み --}}
     @include('layouts.app')
 
     <div class="container">
         <h2>管理者ログイン</h2>
-        {{-- <form method="POST" action="{{ route('login') }}"> --}}
+        <form method="POST" action="/admin/login">
             @csrf
             <label for="email">メールアドレス</label>
             <input type="email" name="email" id="email" required>
