@@ -20,6 +20,7 @@ Route::get('/login', [AuthController::class, 'userLoginForm'])->name('user_login
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'userRegisterForm'])->name('user_register.form');
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', [AttendanceController::class, 'attendance'])->name('attendance');
     Route::post('/attendance/start', [AttendanceController::class, 'start'])->name('attendance.start');

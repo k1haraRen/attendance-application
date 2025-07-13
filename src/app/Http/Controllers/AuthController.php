@@ -72,4 +72,14 @@ class AuthController extends Controller
             return redirect()->intended('/admin/login')->with('status', '管理者ログインできません');
         }
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 }

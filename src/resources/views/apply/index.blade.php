@@ -6,9 +6,14 @@
 
         {{-- 切り替えボタン（申請中 / 承認済） --}}
         <div style="padding-left: 15%; text-align: left; margin-top: 50px; margin-bottom: 30px;">
-            <a href="#"
-                style="padding: 8px 20px; margin-right: 10px; background-color: black; color: white; text-decoration: none;">申請待ち</a>
-            <a href="#" style="padding: 8px 20px; background-color: #ccc; color: black; text-decoration: none;">承認済み</a>
+            <a href="{{ route('request.list', ['status' => 'pending']) }}"
+                style="padding: 8px 20px; margin-right: 10px; background-color: {{ $status === 'pending' ? 'black' : '#ccc' }}; color: {{ $status === 'pending' ? 'white' : 'black' }}; text-decoration: none;">
+                申請待ち
+            </a>
+            <a href="{{ route('request.list', ['status' => 'approved']) }}"
+                style="padding: 8px 20px; background-color: {{ $status === 'approved' ? 'black' : '#ccc' }}; color: {{ $status === 'approved' ? 'white' : 'black' }}; text-decoration: none;">
+                承認済み
+            </a>
         </div>
 
         <table
@@ -24,16 +29,20 @@
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 1; $i <= 6; $i++)
-                    <tr style="border-top: 1px solid #ccc;">
-                        <td style="padding: 10px;">承認待ち</td>
-                        <td>09:00</td>
-                        <td>2023/06/{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}(木)</td>
-                        <td>遅延のため</td>
-                        <td>2023/06/{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}(木)</td>
-                        <td><a href="#" style="color: black; font-weight: bold;">詳細</a></td>
-                    </tr>
-                @endfor
+            @foreach ($corrections as $correction)
+                <tr style="border-top: 1px solid #ccc;">
+                    <td style="padding: 10px;">
+                        {{ $correction->status === 'pending' ? '承認待ち' : '承認済み' }}
+                    </td>
+                    <td>{{ $correction->attendance->user->name }}</td>
+                    <td>{{ \Carbon\Carbon::parse($correction->attendance->date)->format('Y/m/d') }}</td>
+                    <td>{{ $correction->remarks }}</td>
+                    <td>{{ $correction->created_at->format('Y/m/d') }}</td>
+                    <td>
+                        <a href="{{ route('attendance.edit', $correction->attendance->id) }}" style="color: black; font-weight: bold;">詳細</a>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

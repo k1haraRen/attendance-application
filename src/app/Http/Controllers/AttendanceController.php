@@ -191,4 +191,15 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance.list');
     }
+
+    public function requestList(Request $request)
+    {
+        $status = $request->query('status', 'pending');
+        $corrections = AttendanceCorrection::with('attendance.user')
+            ->where('status', $status)
+            ->latest()
+            ->get();
+
+        return view('apply/index', compact('corrections', 'status'));
+    }
 }
