@@ -145,6 +145,18 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'end_time' => [
+            'after_or_equal' => '出勤時間もしくは退勤時間が不適切な値です'
+        ],
+        'break_end' => [
+            'after_or_equal' => '出勤時間もしくは退勤時間が不適切な値です'
+        ],
+        'break2_end' => [
+            'after_or_equal' => '出勤時間もしくは退勤時間が不適切な値です'
+        ],
+        'remarks' => [
+            'required' => '備考を記入してください'
+        ],
     ],
 
     /*

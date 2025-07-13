@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Attendance;
+use App\Models\AttendanceCorrection;
 use App\Models\User;
 
 class AttendanceController extends Controller
@@ -145,5 +147,48 @@ class AttendanceController extends Controller
             'prevMonth' => $prevMonth,
             'nextMonth' => $nextMonth,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $attendance = Attendance::with('user')->findOrFail($id);
+
+        $hasPendingCorrection = AttendanceCorrection::where('attendance_id', $id)
+            ->where('status', 'pending')
+            ->exists();
+
+        return view('attendance/show', compact('attendance', 'hasPendingCorrection'));
+    }
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'attendance_id' => 'required|exists:attendances,id',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
+            'break_start' => 'nullable|date_format:H:i',
+            'break_end' => 'nullable|date_format:H:i|after_or_equal:break_start',
+            'break2_start' => 'nullable|date_format:H:i',
+            'break2_end' => 'nullable|date_format:H:i|after_or_equal:break2_start',
+            'remarks' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        AttendanceCorrection::create([
+            'user_id' => Auth::id(),
+            'attendance_id' => $request->attendance_id,
+            'syukkin' => $request->start_time,
+            'taikin' => $request->end_time,
+            'rests1' => $request->break_start,
+            'reste1' => $request->break_end,
+            'rests2' => $request->break2_start,
+            'reste2' => $request->break2_end,
+            'remarks' => $request->remarks,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('attendance.list');
     }
 }
