@@ -32,13 +32,11 @@ class AttendanceController extends Controller
 
         return view('attendance/attendance', compact('status', 'attendance'));
     }
-
     public function start()
     {
         $user = Auth::user();
         $today = Carbon::today();
 
-        // 同日の重複出勤チェック
         $already = Attendance::where('user_id', $user->id)
             ->where('date', $today)
             ->exists();
@@ -47,7 +45,6 @@ class AttendanceController extends Controller
             return back()->with('error', '本日はすでに出勤しています');
         }
 
-        // 出勤登録
         Attendance::create([
             'user_id' => $user->id,
             'year' => now()->year,
@@ -59,8 +56,6 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance')->with('status', '出勤しました');
     }
-
-    // 退勤
     public function end()
     {
         $attendance = $this->getTodayAttendance();
@@ -75,8 +70,6 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance')->with('status', '退勤しました');
     }
-
-    // 休憩開始
     public function break()
     {
         $attendance = $this->getTodayAttendance();
@@ -85,7 +78,6 @@ class AttendanceController extends Controller
         }
 
         if (!$attendance->rests1) {
-            // 1回目の休憩
             $attendance->update([
                 'rests1' => now()->format('H:i:s'),
             ]);
@@ -93,18 +85,14 @@ class AttendanceController extends Controller
         }
 
         if ($attendance->rests1 && $attendance->reste1 && !$attendance->rests2) {
-            // 2回目の休憩
             $attendance->update([
                 'rests2' => now()->format('H:i:s'),
             ]);
             return redirect()->route('attendance')->with('status', '2回目休憩開始');
         }
 
-        // それ以上は不可
         return back()->with('error', '休憩は2回までです');
     }
-
-    // 休憩戻り
     public function resume()
     {
         $attendance = $this->getTodayAttendance();
@@ -113,15 +101,12 @@ class AttendanceController extends Controller
         }
 
         if ($attendance->rests1 && !$attendance->reste1) {
-            // 1回目の休憩戻り
             $attendance->update([
                 'reste1' => now()->format('H:i:s'),
             ]);
             return redirect()->route('attendance')->with('status', '1回目休憩戻り');
         }
-
         if ($attendance->rests2 && !$attendance->reste2) {
-            // 2回目の休憩戻り
             $attendance->update([
                 'reste2' => now()->format('H:i:s'),
             ]);
@@ -130,12 +115,35 @@ class AttendanceController extends Controller
 
         return back()->with('error', '休憩戻りできません');
     }
-
-    // 共通：当日の出勤データ取得
     private function getTodayAttendance()
     {
         return Attendance::where('user_id', Auth::id())
             ->where('date', Carbon::today())
             ->first();
+    }
+
+    public function attendanceList(Request $request)
+    {
+        $user = auth()->user();
+
+        $month = $request->input('month')
+            ? Carbon::createFromFormat('Y-m', $request->input('month'))->startOfMonth()
+            : now()->startOfMonth();
+
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->orderBy('date')
+            ->get();
+
+        $prevMonth = $month->copy()->subMonth()->format('Y-m');
+        $nextMonth = $month->copy()->addMonth()->format('Y-m');
+
+        return view('attendance.index', [
+            'attendances' => $attendances,
+            'monthLabel' => $month->format('Y/m'),
+            'prevMonth' => $prevMonth,
+            'nextMonth' => $nextMonth,
+        ]);
     }
 }

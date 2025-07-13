@@ -11,7 +11,9 @@ td {
     <div class="container"
         style="display: flex; flex-direction: column; justify-content: center; padding-left: 25%;">
             <h2 style="width; 70%; font-weight: bold; border-left: 5px solid #000; padding-left: 10px; margin-bottom: 30px;">勤怠詳細</h2>
-
+            {{-- <form method="POST" action="{{ route('corrections.store') }}"> --}}
+                @csrf
+                <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
             <table style="width: 70%; background: #fff; border-radius: 5px;">
                 <tr>
                     <td style="width: 30%; padding-left: 50px; font-weight: bold;">名前</td>
@@ -57,5 +59,6 @@ td {
             <button
                 style="padding: 10px 30px; background-color: black; color: white; border: none; font-weight: bold; border-radius: 5px;">修正</button>
         </div>
+        </form>
     </div>
 @endsection

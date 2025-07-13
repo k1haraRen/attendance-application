@@ -7,9 +7,11 @@
         <div style="display: flex; justify-content: center; width: 100%;">
             <div class="month-selector"
                 style="display: flex; justify-content: space-between; align-items: center; width: 70vw; gap: 20px; margin-bottom: 30px; background-color: white; border-radius: 5px;">
-                <button style="border: none; background: none; font-weight: bold;">← 前月</button>
-                <div style="font-weight: bold;">📅 2023/06</div>
-                <button style="border: none; background: none; font-weight: bold;">翌月 →</button>
+                <a href="{{ route('attendance.list', ['month' => $prevMonth]) }}"
+                    style="text-decoration: none; font-weight: bold;">← 前月</a>
+                <div style="font-weight: bold;">📅 {{ $monthLabel }}</div>
+                <a href="{{ route('attendance.list', ['month' => $nextMonth]) }}"
+                    style="text-decoration: none; font-weight: bold;">翌月 →</a>
             </div>
         </div>
 
@@ -26,17 +28,32 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- 以下、後ほどforeachで置き換えてください --}}
-                @for ($i = 1; $i <= 30; $i++)
+                @foreach ($attendances as $attendance)
+                    @php
+                        $date = \Carbon\Carbon::parse($attendance->date);
+                        $restMinutes = 0;
+                        if ($attendance->rests1 && $attendance->reste1) {
+                            $restMinutes += \Carbon\Carbon::parse($attendance->reste1)->diffInMinutes(\Carbon\Carbon::parse($attendance->rests1));
+                        }
+                        if ($attendance->rests2 && $attendance->reste2) {
+                            $restMinutes += \Carbon\Carbon::parse($attendance->reste2)->diffInMinutes(\Carbon\Carbon::parse($attendance->rests2));
+                        }
+                        $totalMinutes = 0;
+                        if ($attendance->syukkin && $attendance->taikin) {
+                            $totalMinutes = \Carbon\Carbon::parse($attendance->taikin)->diffInMinutes(\Carbon\Carbon::parse($attendance->syukkin)) - $restMinutes;
+                        }
+                    @endphp
                     <tr style="border-top: 1px solid #ccc;">
-                        <td style="padding: 10px;">06/{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}(木)</td>
-                        <td>09:00</td>
-                        <td>18:00</td>
-                        <td>1:00</td>
-                        <td>8:00</td>
-                        <td><a href="#" style="color: black; font-weight: bold;">詳細</a></td>
+                        <td style="padding: 10px;">{{ $date->format('m/d') }}({{ ['日', '月', '火', '水', '木', '金', '土'][$date->dayOfWeek] }})
+                        </td>
+                        <td>{{ $attendance->syukkin ? \Carbon\Carbon::parse($attendance->syukkin)->format('H:i') : '' }}</td>
+                        <td>{{ $attendance->taikin ? \Carbon\Carbon::parse($attendance->taikin)->format('H:i') : '' }}</td>
+                        <td>{{ floor($restMinutes / 60) }}:{{ str_pad($restMinutes % 60, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ floor($totalMinutes / 60) }}:{{ str_pad($totalMinutes % 60, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td><a href="{{ route('attendance.edit', ['id' => $attendance->id]) }}"
+                                style="color: black; font-weight: bold;">詳細</a></td>
                     </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
     </div>

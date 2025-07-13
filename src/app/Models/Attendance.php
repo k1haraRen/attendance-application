@@ -41,8 +41,8 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function textes()
+    public function correction()
     {
-        return $this->hasMany(Text::class);
+        return $this->hasMany(AttendanceCorrection::class);
     }
 }

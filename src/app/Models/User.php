@@ -23,4 +23,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function attendanceCorrection()
+    {
+        return $this->hasMany(AttendanceCorrection::class);
+    }
 }
