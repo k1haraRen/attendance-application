@@ -22,6 +22,11 @@ Route::get('/register', [AuthController::class, 'userRegisterForm'])->name('user
 Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth')->group(function () {
     Route::get('/', [AttendanceController::class, 'attendance'])->name('attendance');
+    Route::post('/attendance/start', [AttendanceController::class, 'start'])->name('attendance.start');
+    Route::post('/attendance/end', [AttendanceController::class, 'end'])->name('attendance.end');
+    Route::post('/attendance/break', [AttendanceController::class, 'break'])->name('attendance.break');
+    Route::post('/attendance/resume', [AttendanceController::class, 'resume'])->name('attendance.resume');
+
     Route::get('/attendance/list', [AttendanceController::class, 'attendanceList'])->name('attendance.list');
     Route::get('/request/list', [AttendanceController::class, 'requestList'])->name('request.list');
 });

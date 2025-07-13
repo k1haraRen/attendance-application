@@ -25,6 +25,17 @@ class Attendance extends Model
         'state',
     ];
 
+    protected $casts = [
+        'date' => 'date',
+        'syukkin' => 'datetime:H:i:s',
+        'taikin' => 'datetime:H:i:s',
+        'rests1' => 'datetime:H:i:s',
+        'reste1' => 'datetime:H:i:s',
+        'rests2' => 'datetime:H:i:s',
+        'reste2' => 'datetime:H:i:s',
+        'state' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
