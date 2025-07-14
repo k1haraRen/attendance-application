@@ -4,14 +4,14 @@
     <div class="container" style="text-align:center; padding: 40px 0;">
         <h2
             style="text-align: left; font-weight: bold; margin-left: 15%; margin-bottom: 20px; padding-left: 1%; border-left: 5px solid black;">
-            2023年6月1日の勤怠</h2>
+            {{ $date->format('Y月m日d') }}の勤怠</h2>
 
         <div style="display: flex; justify-content: center; width: 100%;">
             <div class="month-selector"
                 style="display: flex; justify-content: space-between; align-items: center; width: 70vw; gap: 20px; margin-bottom: 30px; background-color: white; border-radius: 5px;">
-                <button style="border: none; background: none; font-weight: bold;">← 前月</button>
-                <div style="font-weight: bold;">📅 2023/06</div>
-                <button style="border: none; background: none; font-weight: bold;">翌月 →</button>
+                <a href="{{ route('manager.admin', ['date' => $prevDate]) }}" style="font-weight: bold;">← 前日</a>
+                <div style="font-weight: bold;">📅 {{ $date->format('Y/m/d') }}</div>
+                <a href="{{ route('manager.admin', ['date' => $nextDate]) }}" style="font-weight: bold;">翌日 →</a>
             </div>
         </div>
 
@@ -28,17 +28,37 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- 以下、後ほどforeachで置き換えてください --}}
-                @for ($i = 1; $i <= 30; $i++)
+                @forelse ($attendances as $attendance)
                     <tr style="border-top: 1px solid #ccc;">
-                        <td style="padding: 10px;">山田　太郎</td>
-                        <td>09:00</td>
-                        <td>18:00</td>
-                        <td>1:00</td>
-                        <td>8:00</td>
-                        <td><a href="#" style="color: black; font-weight: bold;">詳細</a></td>
+                        <td style="padding: 10px;">{{ $attendance->user->name }}</td>
+                        <td>{{ optional($attendance->syukkin)->format('H:i') }}</td>
+                        <td>{{ optional($attendance->taikin)->format('H:i') }}</td>
+                        <td>
+                            @php
+    $rest1 = $attendance->rests1 && $attendance->reste1 ? strtotime($attendance->reste1) - strtotime($attendance->rests1) : 0;
+    $rest2 = $attendance->rests2 && $attendance->reste2 ? strtotime($attendance->reste2) - strtotime($attendance->rests2) : 0;
+    $totalRest = $rest1 + $rest2;
+                            @endphp
+                            {{ gmdate('H:i', $totalRest) }}
+                        </td>
+                        <td>
+                            @php
+    $start = $attendance->syukkin;
+    $end = $attendance->taikin;
+    $workSeconds = $start && $end ? strtotime($end) - strtotime($start) - $totalRest : 0;
+                            @endphp
+                            {{ gmdate('H:i', $workSeconds) }}
+                        </td>
+                        <td>
+                            <a href="{{ route('apply.approve', ['id' => $attendance->id]) }}"
+                                style="color: black; font-weight: bold;">詳細</a>
+                        </td>
                     </tr>
-                @endfor
+                @empty
+                    <tr>
+                        <td colspan="6" style="padding: 10px;">この日の勤怠データはありません。</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

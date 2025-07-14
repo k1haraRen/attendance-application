@@ -164,7 +164,7 @@ class AttendanceController extends Controller
         $validator = Validator::make($request->all(), [
             'attendance_id' => 'required|exists:attendances,id',
             'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time|after_or_equal:break_start|after_or_equal:break_2start',
             'break_start' => 'nullable|date_format:H:i',
             'break_end' => 'nullable|date_format:H:i|after_or_equal:break_start',
             'break2_start' => 'nullable|date_format:H:i',

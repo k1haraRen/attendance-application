@@ -36,7 +36,11 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/admin/login', [AuthController::class, 'managerLoginForm'])->name('manager_login.form');
 Route::post('/admin/login', [AuthController::class, 'managerLogin']);
-
+Route::middleware('auth', 'admin')->group(function () {
+    Route::get('/admin/attendance/list', [ManagerController::class, 'managerAdmin'])->name('manager.admin');
+    Route::get('/admin/attendance/{id}', [ManagerController::class, 'applyApprove'])->name('apply.approve');
+    Route::post('/admin/attendance/{id}/update', [ManagerController::class, 'update'])->name('admin.attendance.update');
+});
 
 /*
 ->middleware(['auth', 'admin']);
