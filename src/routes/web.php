@@ -36,12 +36,15 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/admin/login', [AuthController::class, 'managerLoginForm'])->name('manager_login.form');
 Route::post('/admin/login', [AuthController::class, 'managerLogin']);
-Route::middleware('auth', 'admin')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/attendance/list', [ManagerController::class, 'managerAdmin'])->name('manager.admin');
     Route::get('/admin/attendance/{id}', [ManagerController::class, 'applyApprove'])->name('apply.approve');
     Route::post('/admin/attendance/{id}/update', [ManagerController::class, 'update'])->name('admin.attendance.update');
     Route::get('/admin/staff/list', [ManagerController::class, 'staffList'])->name('staff.list');
     Route::get('/admin/attendance/staff/{id}', [ManagerController::class, 'staffEdit'])->name('staff.edit');
+    Route::get('/admin/request/list', [ManagerController::class, 'applyList'])->name('apply.list');
+    Route::get('/admin/corrections/{id}', [ManagerController::class, 'show'])->name('admin.corrections.show');
+    Route::post('/admin/corrections/{id}/approve', [ManagerController::class, 'approve'])->name('admin.corrections.approve');
 });
 
 /*

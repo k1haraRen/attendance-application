@@ -20,7 +20,7 @@
                 <a href="{{ route('manager.admin') }}" style="color: #fff; margin-left: 16px; text-decoration: none;">勤怠一覧</a>
                 <a href="{{ route('staff.list') }}"
                     style="color: #fff; margin-left: 16px; text-decoration: none;">スタッフ一覧</a>
-                <a href="{{ route('request.list') }}" style="color: #fff; margin-left: 16px; text-decoration: none;">申請一覧</a>
+                <a href="{{ route('apply.list') }}" style="color: #fff; margin-left: 16px; text-decoration: none;">申請一覧</a>
                 <a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                     style="color: #fff; margin-left: 16px; text-decoration: none;">
                     ログアウト

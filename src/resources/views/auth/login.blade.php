@@ -93,10 +93,10 @@
         <form method="POST" action="/login">
             @csrf
             <label for="email">メールアドレス</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email">
 
             <label for="password">パスワード</label>
-            <input type="text" name="password" id="password" required>
+            <input type="text" name="password" id="password">
 
             <button type="submit" class="submit-btn">ログインする</button>
         </form>
@@ -105,6 +105,17 @@
             <a href="{{ route('user_register.form') }}">会員登録はこちら</a>
         </div>
     </div>
+    @if ($errors->any())
+        <div
+            style="width: 70%; margin: 0 auto; margin-bottom: 20px; background-color: #ffe6e6; border: 1px solid red; border-radius: 5px; padding: 15px; color: red;">
+            <strong>入力内容に誤りがあります：</strong>
+            <ul style="margin-top: 10px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 </body>
 

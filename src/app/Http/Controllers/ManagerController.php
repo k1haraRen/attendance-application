@@ -78,4 +78,40 @@ class ManagerController extends Controller
 
         return view('manager.staff_edit', compact('user', 'attendances', 'currentMonth'));
     }
+
+    public function applyList(Request $request)
+    {
+        $status = $request->query('status', 'pending');
+        $corrections = AttendanceCorrection::with('attendance.user')
+            ->where('status', $status)
+            ->latest()
+            ->get();
+
+        return view('manager.apply_list', compact('corrections', 'status'));
+    }
+
+    public function show($id)
+    {
+        $correction = AttendanceCorrection::with(['attendance.user'])->findOrFail($id);
+        return view('manager.apply_approve', compact('correction'));
+    }
+
+    public function approve(Request $request, $id)
+    {
+        $correction = AttendanceCorrection::with('attendance')->findOrFail($id);
+        $attendance = $correction->attendance;
+
+        $attendance->update([
+            'syukkin' => $correction->start_time,
+            'taikin' => $correction->end_time,
+            'rests1' => $correction->break_start,
+            'reste1' => $correction->break_end,
+            'rests2' => $correction->break2_start,
+            'reste2' => $correction->break2_end,
+        ]);
+
+        $correction->update(['status' => 'approved']);
+
+        return redirect()->route('admin.corrections.show', $id);
+    }
 }

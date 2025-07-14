@@ -4,7 +4,6 @@
     <div class="container" style="text-align:center; padding: 40px 0;">
         <h2 style="text-align: left; font-weight: bold; margin-left: 15%; margin-bottom: 20px; padding-left: 1%; border-left: 5px solid black;">申請一覧</h2>
 
-        {{-- 切り替えボタン（申請中 / 承認済） --}}
         <div style="padding-left: 15%; text-align: left; margin-top: 50px; margin-bottom: 30px;">
             <a href="{{ route('request.list', ['status' => 'pending']) }}"
                 style="padding: 8px 20px; margin-right: 10px; background-color: {{ $status === 'pending' ? 'black' : '#ccc' }}; color: {{ $status === 'pending' ? 'white' : 'black' }}; text-decoration: none;">
