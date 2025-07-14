@@ -61,8 +61,21 @@ class ManagerController extends Controller
         return view('manager.staff_list', compact('users'));
     }
 
-    public function staffEdit($id)
+    public function staffEdit($id, Request $request)
     {
-        $attendance = Attendance::where('user_id');
+        $user = User::findOrFail($id);
+
+        $year = $request->query('year', Carbon::now()->year);
+        $month = $request->query('month', Carbon::now()->month);
+
+        $attendances = Attendance::where('user_id', $id)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->orderBy('date')
+            ->get();
+
+        $currentMonth = Carbon::createFromDate($year, $month, 1);
+
+        return view('manager.staff_edit', compact('user', 'attendances', 'currentMonth'));
     }
 }
