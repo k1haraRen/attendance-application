@@ -86,7 +86,7 @@
 
 <body>
 
-    @include('layouts.app')
+    @include('layouts.app_admin')
 
     <div class="container">
         <h2>管理者ログイン</h2>

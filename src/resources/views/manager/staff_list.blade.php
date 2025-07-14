@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_admin')
 
 @section('content')
     <div class="container" style="text-align:center; padding: 40px 0;">
@@ -16,13 +16,13 @@
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 1; $i <= 30; $i++)
+                @foreach ($users as $user)
                     <tr style="border-top: 1px solid #ccc;">
-                        <td style="padding: 10px;">山田　太郎</td>
-                        <td>aaaa@ddddd.sssss</td>
-                        <td><a href="#" style="color: black; font-weight: bold;">詳細</a></td>
+                        <td style="padding: 10px;">{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td><a href="{{ route('staff.edit', ['id' => $user->id]) }}" style="color: black; font-weight: bold;">詳細</a></td>
                     </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
     </div>

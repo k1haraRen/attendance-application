@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_admin')
 <style>
     td {
         border-bottom: 2px solid #f0f0f2;

@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function userLoginForm()
     {
-        return view('auth/login');
+        return view('auth.login');
     }
 
     public function login(Request $request)
@@ -30,7 +30,7 @@ class AuthController extends Controller
 
     public function userRegisterForm()
     {
-        return view('auth/register');
+        return view('auth.register');
     }
 
     public function register(Request $request)
@@ -47,12 +47,12 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect('/login');
+        return redirect('login');
     }
 
     public function managerLoginForm()
     {
-        return view('manager/login');
+        return view('manager.login');
     }
 
     public function managerLogin(Request $request)

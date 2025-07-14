@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_admin')
 
 @section('content')
     <div class="container" style="text-align:center; padding: 40px 0;">

@@ -29,7 +29,7 @@ class ManagerController extends Controller
     public function applyApprove($id)
     {
         $attendance = Attendance::with('user')->findOrFail($id);
-        return view('/manager/attendance_detail', compact('attendance'));
+        return view('manager.attendance_detail', compact('attendance'));
     }
     public function update(Request $request, $id)
     {
@@ -52,6 +52,17 @@ class ManagerController extends Controller
         $attendance->reste2 = $request->break2_end;
         $attendance->save();
 
-        return redirect()->route('manager.admin', $id);
+        return redirect()->route('apply.approve', $id);
+    }
+
+    public function staffList()
+    {
+        $users = User::all();
+        return view('manager.staff_list', compact('users'));
+    }
+
+    public function staffEdit($id)
+    {
+        $attendance = Attendance::where('user_id');
     }
 }

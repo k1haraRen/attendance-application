@@ -32,7 +32,7 @@ class AttendanceController extends Controller
             $status = 'working';
         }
 
-        return view('attendance/attendance', compact('status', 'attendance'));
+        return view('attendance.attendance', compact('status', 'attendance'));
     }
     public function start()
     {
@@ -157,7 +157,7 @@ class AttendanceController extends Controller
             ->where('status', 'pending')
             ->exists();
 
-        return view('attendance/show', compact('attendance', 'hasPendingCorrection'));
+        return view('attendance.show', compact('attendance', 'hasPendingCorrection'));
     }
     public function store(Request $request)
     {
@@ -200,6 +200,6 @@ class AttendanceController extends Controller
             ->latest()
             ->get();
 
-        return view('apply/index', compact('corrections', 'status'));
+        return view('apply.index', compact('corrections', 'status'));
     }
 }

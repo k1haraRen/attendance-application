@@ -40,6 +40,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/admin/attendance/list', [ManagerController::class, 'managerAdmin'])->name('manager.admin');
     Route::get('/admin/attendance/{id}', [ManagerController::class, 'applyApprove'])->name('apply.approve');
     Route::post('/admin/attendance/{id}/update', [ManagerController::class, 'update'])->name('admin.attendance.update');
+    Route::get('/admin/staff/list', [ManagerController::class, 'staffList'])->name('staff.list');
+    Route::get('/admin/attendance/staff/{id}', [ManagerController::class, 'staffEdit'])->name('staff.edit');
 });
 
 /*
